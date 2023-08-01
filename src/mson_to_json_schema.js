@@ -44,7 +44,7 @@ function convert(mson, options) {
             return { type: mson.element };
         default:
             if (!mson.content) {
-                return { '$ref': componentsPath + escapeJSONPointer(mson.element) };
+                return { '$ref': componentsPath + escapeJSONPointer(mson.element).replace(/\s+/g, '') };
             }
             break;
     }
@@ -92,7 +92,7 @@ function convert(mson, options) {
     }
 
     if (mson.element !== 'object') {
-        return { 'allOf': [{ '$ref': componentsPath + escapeJSONPointer(mson.element) }, schema] };
+        return { 'allOf': [{ '$ref': componentsPath + escapeJSONPointer(mson.element).replace(/\s+/g, '') }, schema] };
     }
 
     return schema;

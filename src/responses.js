@@ -2,7 +2,10 @@ const { fixArraySchema, hasFileRef, getRefFromInclude, searchDataStructure, gene
 const escapeJSONPointer = require('./escape_json_pointer')
 const isEqual = require('lodash.isequal')
 const http = require('http')
-const toOpenApi = require('json-schema-to-openapi-schema')
+//const toOpenApi = require('json-schema-to-openapi-schema')
+const toOpenApi = function(s){
+    return {"$schema":"http://json-schema.org/draft-04/schema#", ...s}
+}; 
 
 const parseResponseSchema = (schema, options) => {
     if (!schema) return

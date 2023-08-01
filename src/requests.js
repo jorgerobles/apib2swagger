@@ -1,7 +1,10 @@
 const { hasFileRef, getRefFromInclude, searchDataStructure, generateSchemaFromExample } = require('./util')
 const isEqual = require('lodash.isequal')
 const escapeJSONPointer = require('./escape_json_pointer')
-const toOpenApi = require('json-schema-to-openapi-schema')
+//const toOpenApi = require('json-schema-to-openapi-schema')
+const toOpenApi = function(s){
+    return {"$schema":"http://json-schema.org/draft-04/schema#", ...s}
+}; 
 
 const swaggerHeaders = function (options, headers) {
     var params = [];

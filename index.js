@@ -7,7 +7,10 @@ const { searchDataStructure, generateSchemaFromExample } = require('./src/util')
 const { processRequests } = require('./src/requests')
 const { processResponses } = require('./src/responses')
 const { processParameters } = require('./src/parameters')
-const toOpenApi = require('json-schema-to-openapi-schema')
+//const toOpenApi = require('json-schema-to-openapi-schema')
+const toOpenApi = function(s){
+    return {"$schema":"http://json-schema.org/draft-04/schema#", ...s}
+}; 
 
 var apib2swagger = module.exports.convertParsed = function (apib, options) {
     const { openApi3, infoTitle } = options
@@ -73,7 +76,7 @@ var apib2swagger = module.exports.convertParsed = function (apib, options) {
                 // group description here
                 tags[groupName].description = content.content;
             } else if (content.element === 'dataStructure') {
-                const { id } = content.content[0].meta
+                const id = content.content[0].meta.id.replace(/\s+/g, '')
                 const schema = jsonSchemaFromMSON(content, options);
                 if (openApi3) {
                     output.components.schemas[id] = toOpenApi(schema)
@@ -109,6 +112,7 @@ var swaggerDefinitions = function (resource, options) {
     const result = {}
     const { openApi3 } = options
     if (resource.name) {
+        resource.name = resource.name.replace(/\s+/g, '')
         scheme = searchDataStructure(resource.content, options); // Attributes 1
         if (openApi3) {
             if (scheme) {
@@ -120,6 +124,7 @@ var swaggerDefinitions = function (resource, options) {
     }
     const model = resource.model;
     if (model.content && model.name) {
+        model.name = model.name.replace(/\s+/g, '')
         scheme = searchDataStructure(model.content, options); // Attribute 2
         // fall back to body
         if (!scheme && model.content.length > 0) {

@@ -60,7 +60,7 @@ module.exports.getRefFromInclude = (include) => {
         throw Error('Invalid include syntax:' + include)
     }
 
-    return { $ref: path }
+    return { $ref: path.replace(/\s+/g,'') }
 }
 
 module.exports.searchDataStructure = function (contents, options) {
