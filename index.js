@@ -1,7 +1,10 @@
 var url = require('url'),
     drafter = require('drafter.js'),
     UriTemplate = require('uritemplate'),
-    jsonSchemaFromMSON = require('./src/mson_to_json_schema');
+    jsonSchemaFromMSON = require('./src/mson_to_json_schema'),
+    utils = require('./src/util.js')
+    ;
+
 
 const { searchDataStructure, generateSchemaFromExample } = require('./src/util')
 const { processRequests } = require('./src/requests')
@@ -164,7 +167,7 @@ var swaggerOperation = function (context, pathParams, uriTemplate, action, tag) 
     var operation = {
         'responses': processResponses(action.examples, context.options),
         'summary': action.name,
-        'operationId': action.name,
+        'operationId': utils.normalizeId(action.name,tag),
         'description': action.description,
         'tags': tag ? [tag] : [],
         'parameters': pathParams.concat(processParameters(action.parameters, uriTemplate, context.options))

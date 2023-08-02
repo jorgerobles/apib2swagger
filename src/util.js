@@ -123,3 +123,13 @@ module.exports.getAbsolutePath = function (options, filePath) {
 
     return null
 }
+
+module.exports.normalizeId = function(string, prefix = ''){
+    prefix = prefix.constructor === Array ? prefix.join('_'):prefix;
+    return (prefix+"-"+string).toLowerCase()
+        .trim()
+        .replace(/\s+/g,'-')
+        .replace(/&/g,'and')
+        .replace(/[^A-Z0-9-]/gi,'_')
+        ;
+}
